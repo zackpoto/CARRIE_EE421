@@ -21,7 +21,7 @@ More plots will appear showing the lateral acceleration, trajectory-course devia
 
 To modify or add a different target path/course, open course.py and make a new function that uses the PathPlanning module.
 
-The physical parameters of the vehicle can be added to or modified in the parameters/vehicle_parameters.py file. Running this file while generate a plot of the vehicle geometry with a marker at the COM and a sample velocity vector.
+The physical parameters of the vehicle can be added to or modified in the parameters/vehicle_parameters.py file. Running this file will generate a plot of the vehicle geometry with a marker at the COM and a sample velocity vector.
 
 The simulation parameters (duration & time-step) can be modified in the parameters/simulation_parameters.py file.
 
