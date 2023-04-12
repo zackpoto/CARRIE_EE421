@@ -4,7 +4,7 @@ from controllers.controller import *
 TARGET_SPEED = 2.0  # [m/s] target speed
 
 k = 0.1  # look forward gain
-Lfc = 0.4  # [m] look-ahead distance
+Lfc = 1.4  # [m] look-ahead distance
 Kp = 1.0  # speed proportional gain
 
 class PurePursuit_Controller(Controller):

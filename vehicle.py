@@ -8,11 +8,12 @@ class State:
     vehicle state class
     """
 
-    def __init__(self, x=0.0, y=0.0, yaw=0.0, v=0.0):
+    def __init__(self, x=0.0, y=0.0, yaw=0.0, v=0.0, d = 0.0):
         self.x = x
         self.y = y
         self.yaw = yaw
         self.v = v
+        self.delta = d
 
         self.rear_x = self.x - L2 * math.cos(self.yaw)
         self.rear_y = self.y - L2 * math.sin(self.yaw)
@@ -23,15 +24,18 @@ class State:
         self.R = 0
         self.S = 0
         self.beta = 0
-        self.delta = 0
 
-        self.keys = np.array(['x', 'y', 'yaw', 'v'])
+    def keys(self):
+        return np.array(['x', 'y', 'yaw', 'v', 'd'])
+    
+    def from_dict(self, iterable=(), **kwargs):
+        self.__dict__.update(iterable, **kwargs)
     
     def to_array(self):
-        return np.array([self.x, self.y, self.yaw, self.v])
+        return np.array([self.x, self.y, self.yaw, self.v, self.delta])
     
     def to_dict(self):
-        return dict(zip(self.keys, self.to_array()))
+        return dict(zip(self.keys(), self.to_array()))
     
     def calc_distance(self, point_x, point_y):
         dx = self.x - point_x
@@ -62,7 +66,7 @@ class Vehicle:
     def __init__(self, state=State()):
         self.state = state
     
-    def update(self, input):
+    def update(self, input, dt = DT):
         a = input.accel
         delta = input.delta
         delta = np.clip(delta, -MAX_STEER, MAX_STEER)
@@ -72,10 +76,10 @@ class Vehicle:
         self.state.S = None if (delta == 0) else WB/np.tan(delta)
         self.state.R = None if (delta == 0) else self.state.S / np.cos(self.state.beta)
         
-        self.state.x = self.state.x + self.state.v * math.cos(self.state.yaw + self.state.beta) * DT
-        self.state.y = self.state.y + self.state.v * math.sin(self.state.yaw + self.state.beta) * DT
-        self.state.v = self.state.v + a * DT
-        self.state.yaw = self.state.yaw + self.state.v / WB * math.tan(delta) * math.cos(self.state.beta) * DT
+        self.state.x = self.state.x + self.state.v * math.cos(self.state.yaw + self.state.beta) * dt
+        self.state.y = self.state.y + self.state.v * math.sin(self.state.yaw + self.state.beta) * dt
+        self.state.v = self.state.v + a * dt
+        self.state.yaw = self.state.yaw + self.state.v / WB * math.tan(delta) * math.cos(self.state.beta) * dt
 
         self.state.rear_x = self.state.x - L2 * math.cos(self.state.yaw)
         self.state.rear_y = self.state.y - L2 * math.sin(self.state.yaw)

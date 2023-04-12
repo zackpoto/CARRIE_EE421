@@ -32,7 +32,6 @@ class Simulator():
         
         self.blackbox = None
         self.saved = False
-        pass
 
     def start(self):
         print("Starting Simulation! \nPress 'q' to quit.")
@@ -73,19 +72,23 @@ class Simulator():
 
         while MAX_TIME >= time:
 
+            # Generate course controller update based on current vehicle state
             input_command = controller.command(vehicle.state)
             input_command.normalize()
 
+            # Update vehicle state based on the new input
             vehicle.update(input_command)
-
             time = time + DT
             
+            # Add new vehicle state to the blackbox
             blackbox.add_entry(Entry(t = time, input = input_command, state = vehicle.state))
 
+            # check if vehicle is close enough to the endpoint
             if course.check_goal(vehicle.state, controller.target_ind, GOAL_DIS):
                 blackbox.runtime = time
                 break
 
+            # real-time simulation animation
             if show_animation:  # pragma: no cover
                 plt.cla()
                 fig = plt.gcf()
@@ -144,7 +147,7 @@ def main():
     # controller = MPC_Controller(vehicle.state, course)
     # controller = PurePursuit_Controller(vehicle.state, course)
     controller = Stanley_Controller(vehicle.state, course)
-    
+
     sim = Simulator(course, vehicle, controller)
     sim.start()
 
