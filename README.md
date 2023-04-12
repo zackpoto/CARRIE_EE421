@@ -6,6 +6,10 @@ Simulation source code for path following control of a 4-wheeled autonomous robo
 
 ## Source
 
+Forked from: https://github.com/pgh79/PythonRobotics-master
+
+Can cite for a paper from here: https://arxiv.org/abs/1808.10703
+
 ## How to use
 
 ### Running a simulation
