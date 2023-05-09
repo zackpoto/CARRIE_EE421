@@ -78,7 +78,7 @@ class Simulator():
 
             # Update vehicle state based on the new input
             vehicle.update(input_command)
-            time = time + DT
+             
             
             # Add new vehicle state to the blackbox
             blackbox.add_entry(Entry(t = time, input = input_command, state = vehicle.state))
